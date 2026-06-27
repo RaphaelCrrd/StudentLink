@@ -14,8 +14,13 @@ try {
     $stmt->execute(['id' => $_SESSION['user_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Récupére les demandes reçues
-    $reqRequests = $bdd->prepare("SELECT f.id as friendship_id, u.firstname, u.lastname FROM friendships f JOIN users u ON f.sender_id = u.id WHERE f.receiver_id = :my_id AND f.status = 'pending'");
+    // Récupère les demandes reçues
+    $reqRequests = $bdd->prepare("
+        SELECT f.id as friendship_id, u.id as sender_id, u.firstname, u.lastname 
+        FROM friendships f 
+        JOIN users u ON f.sender_id = u.id 
+        WHERE f.receiver_id = :my_id AND f.status = 'pending'
+    ");
     $reqRequests->execute(['my_id' => $_SESSION['user_id']]);
     $demandes = $reqRequests->fetchAll(PDO::FETCH_ASSOC);
 
@@ -142,7 +147,10 @@ $initials = strtoupper(substr($user['firstname'], 0, 1) . substr($user['lastname
                 <h3 style="font-size: 0.95rem; margin-bottom: 10px; color: #374151;">🔔 Demandes reçues</h3>
                 <?php foreach ($demandes as $demande): ?>
                     <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f3f4f6;">
-                        <span style="font-size: 0.9rem;"><?= htmlspecialchars($demande['firstname'] . ' ' . $demande['lastname']); ?></span>
+                        <a href="../Controller/UserProfileController.php?id=<?= $demande['sender_id']; ?>" style="text-decoration: none; color: #4f46e5; font-size: 0.9rem; font-weight: 600;">
+                            👤 <?= htmlspecialchars($demande['firstname'] . ' ' . $demande['lastname']); ?>
+                        </a>
+                        
                         <a href="../Controller/FriendController.php?action=accept&id=<?= $demande['friendship_id']; ?>" 
                         style="background: #16a34a; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.8rem; font-weight: 600;">
                         Accepter
@@ -158,12 +166,13 @@ $initials = strtoupper(substr($user['firstname'], 0, 1) . substr($user['lastname
                 <p style="font-size: 0.85rem; color: #9ca3af; text-align: center;">Aucun contact pour le moment.</p>
             <?php else: ?>
                 <?php foreach ($contacts as $contact): ?>
-                    <div style="display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f3f4f6;">
+                    <a href="../Controller/UserProfileController.php?id=<?= $contact['id']; ?>" style="display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f3f4f6; text-decoration: none; color: unset;">
                         <div style="width: 30px; height: 30px; border-radius: 50%; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem;">
                             <?= strtoupper(substr($contact['firstname'], 0, 1) . substr($contact['lastname'], 0, 1)); ?>
                         </div>
-                        <span style="font-size: 0.9rem; font-weight: 600;"><?= htmlspecialchars($contact['firstname'] . ' ' . $contact['lastname']); ?></span>
-                    </div>
+                        <span style="font-size: 0.9rem; font-weight: 600; color: #111827;"><?= htmlspecialchars($contact['firstname'] . ' ' . $contact['lastname']); ?></span>
+                        <span style="margin-left: auto; color: #9ca3af; font-size: 0.8rem;">➔</span>
+                    </a>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
