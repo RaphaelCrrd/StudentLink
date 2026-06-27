@@ -73,7 +73,8 @@ require_once '../Controller/SearchController.php';
                     <div class="avatar"><?= $initials; ?></div>
                     <div class="student-info">
                         <h3><?= htmlspecialchars($student['firstname'] . ' ' . $student['lastname']); ?></h3>
-                        <p>🏫 <?= htmlspecialchars($student['school_name'] ?? 'Non renseigné'); ?></p>
+                        <p>🏫 <?= htmlspecialchars($student['school_name']); ?></p>
+                        <p><img src="../../public/assets/img/instagram.png" alt="Instagram" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 5px; margin-top: 3px; margin-bottom: 3px"> <?= htmlspecialchars($student['instagram']?? 'Non renseigné'); ?></p>
                         <div class="tags">
                             <?php 
                             if(!empty($student['interests'])) {
@@ -85,7 +86,7 @@ require_once '../Controller/SearchController.php';
                             ?>
                         </div>
                     </div>
-                    <button class="btn-connect">Ajouter</button>
+                    <button class="btn-connect" onclick="sendFriendRequest(<?= $student['id']; ?>, this)">Ajouter</button>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -98,5 +99,23 @@ require_once '../Controller/SearchController.php';
         <a href="../Controller/LogoutController.php" class="nav-item" style="color: #e74c3c;">🚪<br>Quitter</a>
     </nav>
 
+    <script>
+function sendFriendRequest(userId, buttonElement) {
+    buttonElement.innerText = "Demandé";
+    buttonElement.style.backgroundColor = "#6b7280";
+    buttonElement.disabled = true;
+
+    // Envoi de la requête au contrôleur sans recharger la page (AJAX)
+    fetch(`../Controller/FriendController.php?action=send&to=${userId}`)
+        .then(response => {
+            if (!response.ok) { // Pas ok donc erreur
+                buttonElement.innerText = "Ajouter";
+                buttonElement.style.backgroundColor = "#4f46e5";
+                buttonElement.disabled = false;
+                alert("Erreur lors de l'envoi de la demande.");
+            }
+        });
+}
+</script>
 </body>
 </html>

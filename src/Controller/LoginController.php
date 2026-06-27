@@ -6,8 +6,12 @@ try {
     $bdd = new PDO('mysql:host=localhost;dbname=student_link;charset=utf8', 'root', 'root'); // A la fin remplacer 'root' par '' sur Windows
     $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (Exception $e) {
-    die('Erreur de connexion à la BDD : ' . $e->getMessage());
-}
+        $logSql = "INSERT INTO logs (action_type, description) VALUES ('SYSTEM_ERROR', :desc)";
+        $logStmt = $bdd->prepare($logSql);
+        $logStmt->execute(['desc' => "Erreur SQL : " . $e->getMessage()]);
+    
+        die('Une erreur technique est survenue.');
+    }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
@@ -29,19 +33,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     exit();
                 }
 
-                $_SESSION['user_id']   = $user['id'];
+                $_SESSION['user_id'] = $user['id'];
                 $_SESSION['firstname'] = $user['firstname'];
-                $_SESSION['role']      = $user['role'];
+                $_SESSION['role'] = $user['role'];
 
-                header('Location: ../View/dashboard.php');
+                if ($_SESSION['role'] === 'admin') {
+                    header('Location: ../View/admin.php');
+                } else {
+                    header('Location: ../View/dashboard.php');
+                }
                 exit();
 
             } else {
                 echo "Identifiants incorrects. Veuillez réessayer.";
             }
 
-        } catch (PDOException $e) {
-            echo "Une erreur technique est survenue : " . $e->getMessage();
+        } catch (Exception $e) {
+        $logSql = "INSERT INTO logs (action_type, description) VALUES ('SYSTEM_ERROR', :desc)";
+        $logStmt = $bdd->prepare($logSql);
+        $logStmt->execute(['desc' => "Erreur SQL : " . $e->getMessage()]);
+    
+        die('Une erreur technique est survenue.');
         }
 
     } else {

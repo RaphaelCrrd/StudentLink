@@ -1,13 +1,11 @@
 <?php
 session_start();
 
-// Sécurité : si pas connecté, retour à la case départ
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
 
-// Récupération des données actuelles de l'étudiant
 try {
     $bdd = new PDO('mysql:host=localhost;dbname=student_link;charset=utf8', 'root', 'root');
     $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -16,13 +14,32 @@ try {
     $stmt->execute(['id' => $_SESSION['user_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$user) {
-        die("Utilisateur introuvable.");
-    }
-} catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-}
+    // Récupére les demandes reçues
+    $reqRequests = $bdd->prepare("SELECT f.id as friendship_id, u.firstname, u.lastname FROM friendships f JOIN users u ON f.sender_id = u.id WHERE f.receiver_id = :my_id AND f.status = 'pending'");
+    $reqRequests->execute(['my_id' => $_SESSION['user_id']]);
+    $demandes = $reqRequests->fetchAll(PDO::FETCH_ASSOC);
 
+    // Récupéree les contacts acceptés
+    $reqFriends = $bdd->prepare("
+        SELECT u.id, u.firstname, u.lastname, u.interests, u.instagram
+        FROM friendships f 
+        JOIN users u ON (f.sender_id = u.id OR f.receiver_id = u.id) 
+        WHERE (f.sender_id = :my_id OR f.receiver_id = :my_id) 
+        AND f.status = 'accepted' 
+        AND u.id != :my_id
+    ");
+    $reqFriends->execute(['my_id' => $_SESSION['user_id']]);
+    $contacts = $reqFriends->fetchAll(PDO::FETCH_ASSOC);
+    
+    $nbContacts = count($contacts);
+
+} catch (Exception $e) {
+        $logSql = "INSERT INTO logs (action_type, description) VALUES ('SYSTEM_ERROR', :desc)";
+        $logStmt = $bdd->prepare($logSql);
+        $logStmt->execute(['desc' => "Erreur SQL : " . $e->getMessage()]);
+    
+        die('Une erreur technique est survenue.');
+    }
 
 $initials = strtoupper(substr($user['firstname'], 0, 1) . substr($user['lastname'], 0, 1));
 ?>
@@ -101,6 +118,11 @@ $initials = strtoupper(substr($user['firstname'], 0, 1) . substr($user['lastname
                 </div>
 
                 <div class="form-group">
+                    <label for="age">Instagram</label>
+                    <input type="string" id="instagram" name="instagram" value="<?= htmlspecialchars($user['instagram']); ?>" required>
+                </div>
+
+                <div class="form-group">
                     <label for="interests">Mes centres d'intérêt / Passions (séparés par des virgules)</label>
                     <textarea id="interests" name="interests" placeholder="Ex: Informatique, Basket, Jeux vidéo..."><?= htmlspecialchars($user['interests']); ?></textarea>
                     <span style="font-size: 0.75rem; color: #9ca3af;">Ajoute des tags en les séparant par des virgules.</span>
@@ -108,6 +130,42 @@ $initials = strtoupper(substr($user['firstname'], 0, 1) . substr($user['lastname
 
                 <button type="submit" class="btn-save">Enregistrer les modifications</button>
             </form>
+        </div>
+
+        <div class="card" style="text-align: center; margin: 20px 0px; padding: 15px; background: white; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+            <span style="font-size: 1.5rem; font-weight: bold; color: #4f46e5;"><?= $nbContacts; ?></span>
+            <p style="font-size: 0.85rem; color: #6b7280; font-weight: 600;">Contacts validés</p>
+        </div>
+
+        <?php if (!empty($demandes)): ?>
+            <div class="card" style="margin: 20px 0px; border-left: 4px solid #4f46e5; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <h3 style="font-size: 0.95rem; margin-bottom: 10px; color: #374151;">🔔 Demandes reçues</h3>
+                <?php foreach ($demandes as $demande): ?>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f3f4f6;">
+                        <span style="font-size: 0.9rem;"><?= htmlspecialchars($demande['firstname'] . ' ' . $demande['lastname']); ?></span>
+                        <a href="../Controller/FriendController.php?action=accept&id=<?= $demande['friendship_id']; ?>" 
+                        style="background: #16a34a; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none; font-size: 0.8rem; font-weight: 600;">
+                        Accepter
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <div class="card" style="margin-bottom: 20px; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+            <h3 style="font-size: 0.95rem; margin-bottom: 12px; color: #374151;">👥 Mes contacts</h3>
+            <?php if (empty($contacts)): ?>
+                <p style="font-size: 0.85rem; color: #9ca3af; text-align: center;">Aucun contact pour le moment.</p>
+            <?php else: ?>
+                <?php foreach ($contacts as $contact): ?>
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f3f4f6;">
+                        <div style="width: 30px; height: 30px; border-radius: 50%; background: #eef2ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem;">
+                            <?= strtoupper(substr($contact['firstname'], 0, 1) . substr($contact['lastname'], 0, 1)); ?>
+                        </div>
+                        <span style="font-size: 0.9rem; font-weight: 600;"><?= htmlspecialchars($contact['firstname'] . ' ' . $contact['lastname']); ?></span>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
     </div>

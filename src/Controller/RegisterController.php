@@ -1,6 +1,6 @@
 <?php
 try {
-    // Sur Windows, remplacer le dernier 'root' par '' (vide)
+    // Sur Windows, remplacer le dernier 'root' par ''
     $bdd = new PDO('mysql:host=localhost;dbname=student_link;charset=utf8', 'root', 'root');
     $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (Exception $e) {
@@ -17,27 +17,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $school_id = !empty($_POST['school_id']) ? intval($_POST['school_id']) : null;
     $interests = htmlspecialchars(trim($_POST['interests']));
+    $instagram = htmlspecialchars(trim($_POST['instagram']));
 
     if (!empty($firstname) && !empty($lastname) && $email && !empty($age) && !empty($password) && !empty($school_id)) {
         
         $passwordHash = password_hash($password, PASSWORD_BCRYPT);
 
         try {
-            $sql = "INSERT INTO users (firstname, lastname, email, password, age, school_id, interests, role, status) 
-                    VALUES (:firstname, :lastname, :email, :password, :age, :school_id, :interests, 'student', 'active')";
+            $sql = "INSERT INTO users (firstname, lastname, email, password, age, school_id, interests, instagram, role, status) 
+                    VALUES (:firstname, :lastname, :email, :password, :age, :school_id, :interests, :instagram, 'student', 'active')";
             
             $stmt = $bdd->prepare($sql);
             
-       
             $stmt->execute([
                 'firstname' => $firstname,
-                'lastname'  => $lastname,
-                'email'     => $email,
-                'password'  => $passwordHash,
-                'age'       => $age,
+                'lastname' => $lastname,
+                'email' => $email,
+                'password' => $passwordHash,
+                'age' => $age,
                 'school_id' => $school_id,
-                'interests' => $interests
+                'interests' => $interests,
+                'instagram' => $instagram,
             ]);
+
+            $logSql = "INSERT INTO logs (action_type, description) VALUES ('INSCRIPTION', :desc)";
+            $logStmt = $bdd->prepare($logSql);
+            $logStmt->execute(['desc' => "Nouvel étudiant inscrit : " . $firstname . " " . $lastname . " (" . $email . ")"]);
 
             header('Location: ../View/login.php?registration=success');
             exit();
@@ -46,7 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($e->getCode() == 23000) {
                 echo "Erreur : Cette adresse email est déjà associée à un compte.";
             } else {
-                echo "Une erreur technique est survenue : " . $e->getMessage();
+                $logSql = "INSERT INTO logs (action_type, description) VALUES ('SYSTEM_ERROR', :desc)";
+                $logStmt = $bdd->prepare($logSql);
+                $logStmt->execute(['desc' => "Erreur SQL : " . $e->getMessage()]);
+                
+                die('Une erreur technique est survenue.');
             }
         }
 

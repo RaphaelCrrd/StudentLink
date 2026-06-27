@@ -21,9 +21,9 @@ L'application a été développée sans framework ("from scratch") afin de maît
 
 ### Architecture Logicielle
 - **Design Pattern : MVC (Modèle-Vue-Contrôleur)**
-  - `src/Models/` : Gestion des entités et des interactions avec la base de données (PDO).
-  - `src/Controllers/` : Logique métier, interception des formulaires et sécurité.
-  - `src/Views/` : Interfaces utilisateurs (HTML5 / CSS3 / JavaScript).
+  - `src/Model/` : Gestion des entités et des interactions avec la base de données (PDO).
+  - `src/Controller/` : Logique métier, interception des formulaires et sécurité.
+  - `src/View/` : Interfaces utilisateurs (HTML5 / CSS3 / JavaScript).
 
 ### Technologies Utilisées
 - **Backend** : PHP 8 (Programmation Orientée Objet) et sessions natives pour le maintien de l'état d'authentification.
@@ -39,4 +39,5 @@ L'application a été développée sans framework ("from scratch") afin de maît
 3. **Failles XSS (Cross-Site Scripting)** : Échappement systématique de toutes les données dynamiques affichées au client à l'aide de la fonction **`htmlspecialchars()`**.
 4. **Gestion des Erreurs** : Utilisation de blocs `try / catch` et du mode d'exception de PDO (`PDO::ERRMODE_EXCEPTION`) pour éviter la divulgation d'informations sensibles (chemins système, structure de table) en cas de panne de la base.
 5. **Conformité RGPD** : Implémentation d'un **Soft Delete** pour la désactivation de compte (mise à jour du statut en base de données plutôt qu'une suppression brute), assurant l'intégrité référentielle tout en masquant l'utilisateur.
+
 

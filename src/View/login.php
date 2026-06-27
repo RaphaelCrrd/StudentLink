@@ -28,7 +28,6 @@
             max-width: 400px;
             padding: 40px 30px;
             border-radius: 16px;
-            /*box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);*/
             text-align: center;
         }
 

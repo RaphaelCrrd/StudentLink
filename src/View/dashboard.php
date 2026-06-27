@@ -25,8 +25,13 @@ try {
     $camarades = $studentsStmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
-}
+        $logSql = "INSERT INTO logs (action_type, description) VALUES ('SYSTEM_ERROR', :desc)";
+        $logStmt = $bdd->prepare($logSql);
+        $logStmt->execute(['desc' => "Erreur SQL : " . $e->getMessage()]);
+    
+        die('Une erreur technique est survenue.');
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -151,23 +156,25 @@ try {
 
         <h2 class="section-title">Nouveaux inscrits dans ton école</h2>
 
-        <?php if (empty($camarades)): ?>
+        <?php if (empty($result)): ?>
             <div class="empty-state">
                 Aucun autre étudiant de ton école n'est encore inscrit. Sois le premier à partager l'application !
             </div>
         <?php else: ?>
-            <?php foreach ($camarades as $camarade): 
-                // Extraction des initiales pour créer un avatar par défaut propre
-                $initials = strtoupper(substr($camarade['firstname'], 0, 1) . substr($camarade['lastname'], 0, 1));
+            <?php foreach ($result as $student): 
+                // Extraction des initiales pour créer un avatar par défaut
+                $initials = strtoupper(substr($student['firstname'], 0, 1) . substr($student['lastname'], 0, 1));
             ?>
                 <div class="student-card">
                     <div class="avatar"><?= $initials; ?></div>
                     <div class="student-info">
-                        <h3><?= htmlspecialchars($camarade['firstname'] . ' ' . $camarade['lastname']); ?></h3>
+                        <h3><?= htmlspecialchars($student['firstname'] . ' ' . $student['lastname']); ?></h3>
+                        <p>🏫 <?= htmlspecialchars($student['school_name']); ?></p>
+                        <p><img src="../../public/assets/img/instagram.png" alt="Instagram" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 5px; margin-top: 3px; margin-bottom: 3px"> <?= htmlspecialchars($student['instagram'] ?? 'Non renseigné'); ?></p>
                         <div class="tags">
                             <?php 
-                            if(!empty($camarade['interests'])) {
-                                $interestsArr = explode(',', $camarade['interests']);
+                            if(!empty($student['interests'])) {
+                                $interestsArr = explode(',', $student['interests']);
                                 foreach(array_slice($interestsArr, 0, 3) as $interest) {
                                     echo '<span class="tag">#' . htmlspecialchars(trim($interest)) . '</span>';
                                 }
@@ -175,7 +182,8 @@ try {
                             ?>
                         </div>
                     </div>
-                    <button class="btn-connect" onclick="sendFriendRequest(<?= $camarade['id']; ?>, this)">Ajouter</button>
+                    <button class="btn-connect" onclick="sendFriendRequest(<?= $student['id']; ?>, this)">Ajouter</button>
+                
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -189,13 +197,22 @@ try {
     </nav>
 
     <script>
-        function sendFriendRequest(userId, buttonElement) {
-            buttonElement.innerText = "Demandé";
-            buttonElement.style.backgroundColor = "#6b7280";
-            buttonElement.disabled = true;
+function sendFriendRequest(userId, buttonElement) {
+    buttonElement.innerText = "Demandé";
+    buttonElement.style.backgroundColor = "#6b7280";
+    buttonElement.disabled = true;
 
-            
-        }
-    </script>
+    // Envoi de la requête au contrôleur sans recharger la page (AJAX)
+    fetch(`../Controller/FriendController.php?action=send&to=${userId}`)
+        .then(response => {
+            if (!response.ok) { // Pas ok donc erreur
+                buttonElement.innerText = "Ajouter";
+                buttonElement.style.backgroundColor = "#4f46e5";
+                buttonElement.disabled = false;
+                alert("Erreur lors de l'envoi de la demande.");
+            }
+        });
+}
+</script>
 </body>
 </html>

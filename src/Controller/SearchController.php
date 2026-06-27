@@ -16,7 +16,7 @@ if (!empty($searchQuery)) {
         $bdd = new PDO('mysql:host=localhost;dbname=student_link;charset=utf8', 'root', 'root');
         $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "SELECT u.id, u.firstname, u.lastname, u.interests, s.name as school_name 
+        $sql = "SELECT u.id, u.firstname, u.lastname, u.interests, u.instagram, s.name as school_name 
                 FROM users u 
                 LEFT JOIN schools s ON u.school_id = s.id 
                 WHERE (u.firstname LIKE :q 
@@ -36,6 +36,10 @@ if (!empty($searchQuery)) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     } catch (Exception $e) {
-        die('Erreur de recherche : ' . $e->getMessage());
+        $logSql = "INSERT INTO logs (action_type, description) VALUES ('SYSTEM_ERROR', :desc)";
+        $logStmt = $bdd->prepare($logSql);
+        $logStmt->execute(['desc' => "Erreur SQL : " . $e->getMessage()]);
+    
+        die('Une erreur technique est survenue.');
     }
 }

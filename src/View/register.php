@@ -188,6 +188,11 @@ try {
                 <label for="interests">Tes centres d'intérêt (séparés par une virgule)</label>
                 <input type="text" id="interests" name="interests" placeholder="Ex: Sport, Jeux Vidéo, Musique, Cinéma">
             </div>
+            
+            <div class="form-group">
+                <label for="instagram">Ton instagram</label>
+                <input type="text" id="instagram" name="instagram" placeholder="Ex: raphael_crrd">
+            </div>
 
             <button type="submit" class="btn-submit">Créer mon compte</button>
         </form>

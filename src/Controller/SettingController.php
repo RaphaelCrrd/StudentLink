@@ -12,7 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $bdd = new PDO('mysql:host=localhost;dbname=student_link;charset=utf8', 'root', 'root');
         $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (Exception $e) {
-        die('Erreur BDD : ' . $e->getMessage());
+        $logSql = "INSERT INTO logs (action_type, description) VALUES ('SYSTEM_ERROR', :desc)";
+        $logStmt = $bdd->prepare($logSql);
+        $logStmt->execute(['desc' => "Erreur SQL : " . $e->getMessage()]);
+    
+        die('Une erreur technique est survenue.');
     }
 
     $action = $_POST['action'] ?? '';
@@ -22,15 +26,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $newPassword = $_POST['new_password'] ?? '';
 
         if (!empty($oldPassword) && !empty($newPassword)) {
-            // Récupère le mot de passe haché actuel en BDD
+            // Récupère le mot de passe haché actuel
             $stmt = $bdd->prepare("SELECT password FROM users WHERE id = :id");
             $stmt->execute(['id' => $_SESSION['user_id']]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Vérifie si l'ancien mot de passe correspond
+            // Compare avec l'ancien mdp
             if ($user && password_verify($oldPassword, $user['password'])) {
                 
-                // Hache le nouveau mot de passe et fait l'UPDATE
                 $newHash = password_hash($newPassword, PASSWORD_BCRYPT);
                 $updateStmt = $bdd->prepare("UPDATE users SET password = :password WHERE id = :id");
                 $updateStmt->execute([
