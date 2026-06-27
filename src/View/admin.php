@@ -1,3 +1,10 @@
+<?php
+// Si la variable $users n'est pas définie, c'est qu'on n'est pas passé par le contrôleur
+if (!isset($users)) {
+    header('Location: ../Controller/AdminController.php');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -116,7 +123,7 @@
                         <th>Utilisateur ciblé</th>
                         <th>Raison du signalement</th>
                         <th>Statut actuel</th>
-                        <th>Action recommandée</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -132,7 +139,7 @@
                                 <td><span class="badge badge-suspended">En attente</span></td>
                                 <td>
                                     <a href="../Controller/AdminController.php?action=toggle_status&user_id=<?= $report['reported_user_id']; ?>&report_id=<?= $report['report_id']; ?>" class="btn btn-suspend" onclick="return confirm('Suspendre le compte de cet utilisateur suite au signalement ?')">
-                                        Actionner Sanction
+                                        Suspendre
                                     </a>
                                 </td>
                             </tr>
