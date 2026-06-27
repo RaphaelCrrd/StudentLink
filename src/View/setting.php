@@ -1,7 +1,5 @@
 <?php
 session_start();
-
-// Sécurité : si pas connecté, ça renvoie au login
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();

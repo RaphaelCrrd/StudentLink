@@ -11,98 +11,122 @@ if (!isset($users)) {
     <meta charset="UTF-8">
     <title>Panel Administration - Student Link</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: #f3f4f6; 
-            color: #1f2937; 
-            margin: 0; 
-            padding: 15px; 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f3f4f6;
+            color: #1f2937;
+            margin: 0;
+            padding: 15px;
+            padding-bottom: 90px;
         }
-        .admin-container { 
-            max-width: 100%; 
-            margin: 0 auto; 
+        .admin-container {
+            max-width: 100%;
+            margin: 0 auto;
         }
-        h1 { 
+        h1 {
             font-size: 1.6rem;
-            color: #111827; 
-            margin-bottom: 20px; 
-            border-bottom: 2px solid #e5e7eb; 
-            padding-bottom: 10px; 
+            color: #111827;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
         }
-        h2 { 
-            font-size: 1.1rem; 
-            color: #374151; 
-            margin-top: 0; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
+        h2 {
+            font-size: 1.1rem;
+            color: #374151;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .admin-grid { 
+        .admin-grid {
             display: flex;
             flex-direction: column;
-            gap: 20px; 
+            gap: 20px;
         }
-        .admin-section { 
-            background: white; 
-            padding: 15px; 
-            border-radius: 8px; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
-            overflow-x: auto; 
+        .admin-section {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow-x: auto;
         }
-        .admin-table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            text-align: left; 
-            margin-top: 10px; 
-            font-size: 0.85rem; 
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin-top: 10px;
+            font-size: 0.85rem;
         }
-        .admin-table th, .admin-table td { 
-            padding: 10px 12px; 
-            border-bottom: 1px solid #edf2f7; 
+        .admin-table th, .admin-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #edf2f7;
         }
-        .admin-table th { 
-            background: #f8fafc; 
-            color: #64748b; 
-            font-weight: 600; 
-            text-transform: uppercase; 
-            font-size: 0.7rem; 
+        .admin-table th {
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.7rem;
         }
-        .row-error { 
-            background-color: #fef2f2; 
-            color: #991b1b; 
+        .row-error {
+            background-color: #fef2f2;
+            color: #991b1b;
         }
-        .badge { 
-            padding: 3px 6px; 
-            border-radius: 4px; 
-            font-size: 0.7rem; 
-            font-weight: bold; 
+        .badge {
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: bold;
         }
-        .badge-active { 
-            background: #dcfce7; 
-            color: #166534; 
+        .badge-active {
+            background: #dcfce7;
+            color: #166534;
         }
-        .badge-suspended { 
-            background: #fef2f2; 
-            color: #991b1b; 
+        .badge-suspended {
+            background: #fef2f2;
+            color: #991b1b;
         }
-        .btn { 
-            padding: 6px 10px; 
-            border-radius: 4px; 
-            text-decoration: none; 
-            font-size: 0.75rem; 
-            font-weight: 500; 
-            display: inline-block; 
+        .btn {
+            padding: 6px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            display: inline-block;
             white-space: nowrap;
         }
-        .btn-suspend { 
-            background: #fee2e2; 
-            color: #dc2626; 
-            border: 1px solid #fca5a5; 
+        .btn-suspend {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
         }
         .btn-activate { 
-            background: #dcfce7; 
-            color: #16a34a; 
-            border: 1px solid #86efac; 
+            background: #dcfce7;
+            color: #16a34a;
+            border: 1px solid #86efac;
+        }
+        .bottom-nav {
+            position: fixed; 
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            height: 65px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #e5e7eb;
+            z-index: 1000; /* Pour que la barre reste toujours au-dessus des tableaux */
+        }
+        .nav-item {
+            text-decoration: none;
+            color: #9ca3af;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        .nav-item.active {
+            color: #4f46e5;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -220,6 +244,14 @@ if (!isset($users)) {
 
     </div>
 </div>
-
+<nav class="bottom-nav">
+    <a href="../Controller/AdminController.php" class="nav-item active">🛠️<br>Admin</a>
+        
+    <a href="../Controller/ProfileController.php" class="nav-item">👤<br>Mon Profil</a>
+        
+    <a href="setting.php" class="nav-item">⚙️<br>Réglages</a>
+    
+    <a href="../Controller/LogoutController.php" class="nav-item" style="color: #e74c3c;">🚪<br>Quitter</a>
+</nav>
 </body>
 </html>
