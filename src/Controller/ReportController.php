@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['reason']) && !empty(
             'desc' => "L'utilisateur ID $reporterId a signalé l'utilisateur ID $reportedId pour la raison : $reason"
         ]);
 
-        header("Location: AdminController.php?report=success");
+        header("Location: UserProfileController.php?id=" . $reportedId . "&report=success");
         exit();
 
     } catch (Exception $e) {
