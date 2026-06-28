@@ -1,6 +1,5 @@
 <?php
 
-
 try {
     $bdd = new PDO('mysql:host=localhost;dbname=student_link;charset=utf8', 'root', 'root');
     $query = $bdd->query("SELECT id, name, city FROM schools ORDER BY name ASC");

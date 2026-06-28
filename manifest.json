@@ -1,0 +1,17 @@
+{
+  "nav_mode": "instance",
+  "name": "Studou",
+  "short_name": "Studou",
+  "description": "Trouve tes futur camarades de classe.",
+  "start_url": "src/View/login.php",
+  "display": "standalone",
+  "background_color": "#f3f4f6",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "public/assets/img/logo.jpg",
+      "sizes": "450x450",
+      "type": "image/png"
+    }
+  ]
+}
