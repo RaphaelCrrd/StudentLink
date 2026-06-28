@@ -13,6 +13,31 @@ class UserModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getUserById($id) {
+        $stmt = $this->db->prepare("
+            SELECT u.id,
+                u.firstname,
+                u.lastname,
+                u.email,
+                u.age,
+                u.instagram,
+                u.interests,
+                u.school_id,
+                u.role,
+                u.status,
+                s.name AS school_name
+            FROM users u
+            LEFT JOIN schools s ON u.school_id = s.id
+            WHERE u.id = :id
+        ");
+
+        $stmt->execute([
+            'id' => $id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function updateProfile($id, $age, $interests, $instagram) {
         $stmt = $this->db->prepare("
             UPDATE users 
@@ -24,6 +49,14 @@ class UserModel {
             'age' => $age,
             'interests' => $interests,
             'instagram' => $instagram,
+            'id' => $id
+        ]);
+    }
+
+    public function updateAvatar($id, $avatarFilename) {
+        $stmt = $this->db->prepare("UPDATE users SET avatar = :avatar WHERE id = :id");
+        return $stmt->execute([
+            'avatar' => $avatarFilename,
             'id' => $id
         ]);
     }

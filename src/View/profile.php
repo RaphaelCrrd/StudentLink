@@ -111,7 +111,14 @@ $initials = strtoupper(substr($user['firstname'], 0, 1) . substr($user['lastname
     <div class="container">
         
         <div class="profile-header">
-            <div class="avatar-large"><?= $initials; ?></div>
+            <div class="avatar-large">
+                <?php if (!empty($user['avatar']) && file_exists('../../public/uploads/profile_picture/' . $user['avatar'])): ?>
+                    <img src="../../public/uploads/profile_picture/<?= htmlspecialchars($user['avatar']); ?>" alt="Profile picture" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                <?php else: ?>
+                    <?= $initials; ?>
+                <?php endif; ?>
+            </div>
+            
             <h1><?= htmlspecialchars($user['firstname'] . ' ' . $user['lastname']); ?></h1>
             <p>🏫 <?= htmlspecialchars($user['school_name'] ?? 'Aucun établissement lié'); ?></p>
         </div>
@@ -121,7 +128,12 @@ $initials = strtoupper(substr($user['firstname'], 0, 1) . substr($user['lastname
         <?php endif; ?>
 
         <div class="card">
-            <form action="../Controller/ProfileController.php" method="POST">
+            <form action="../Controller/ProfileController.php" method="POST" enctype="multipart/form-data">
+                
+                <div class="form-group">
+                    <label for="avatar">Changer ma photo de profil</label>
+                    <input type="file" id="avatar" name="avatar" accept="image/*">
+                </div>
                 
                 <div class="form-group">
                     <label>Adresse mail (Non modifiable)</label>
@@ -134,7 +146,7 @@ $initials = strtoupper(substr($user['firstname'], 0, 1) . substr($user['lastname
                 </div>
 
                 <div class="form-group">
-                    <label for="age">Instagram</label>
+                    <label for="instagram">Instagram</label> <!-- J'avais mis for="age" et ça fonctionnait-->
                     <input type="string" id="instagram" name="instagram" value="<?= htmlspecialchars($user['instagram'] ?? ''); ?>" required>
                 </div>
 
