@@ -164,13 +164,20 @@ $initials = strtoupper(substr($user['firstname'], 0, 1) . substr($user['lastname
     </div>
 
     <nav class="bottom-nav">
-        <a href="dashboard.php" class="nav-item">
-            <span class="material-symbols-outlined">home</span>
-        </a>
-        <a href="profile.php" class="nav-item active">
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+            <a href="../Controller/AdminController.php" class="nav-item">
+                <span class="material-symbols-outlined">home</span>
+            </a>
+        <?php else: ?>
+            <a href="../View/dashboard.php" class="nav-item">
+                <span class="material-symbols-outlined">home</span>
+            </a>
+        <?php endif; ?>
+
+        <a href="../Controller/ProfileController.php" class="nav-item active">
             <span class="material-symbols-outlined">account_circle</span>
         </a>
-        <a href="setting.php" class="nav-item">
+        <a href="../View/setting.php" class="nav-item">
             <span class="material-symbols-outlined">settings</span>
         </a>
         <a href="../Controller/LogoutController.php" class="nav-item" style="color: #e74c3c;">

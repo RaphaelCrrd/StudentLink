@@ -138,16 +138,19 @@ if (!isset($users)) {
     </div>
 </div>
     <nav class="bottom-nav">
-        <a href="dashboard.php" class="nav-item active">
+        <a href="AdminController.php" class="nav-item">
             <span class="material-symbols-outlined">home</span>
         </a>
-        <a href="profile.php" class="nav-item">
+        
+        <a href="ProfileController.php" class="nav-item">
             <span class="material-symbols-outlined">account_circle</span>
         </a>
-        <a href="setting.php" class="nav-item">
+        
+        <a href="../View/setting.php" class="nav-item">
             <span class="material-symbols-outlined">settings</span>
         </a>
-        <a href="../Controller/LogoutController.php" class="nav-item" style="color: #e74c3c;">
+        
+        <a href="LogoutController.php" class="nav-item" style="color: #e74c3c;">
             <span class="material-symbols-outlined">exit_to_app</span>
         </a>
     </nav>
