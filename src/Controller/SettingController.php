@@ -1,70 +1,75 @@
 <?php
+
 session_start();
+
+require_once '../Model/Database.php';
+require_once '../Model/UserModel.php';
+require_once '../Model/LogModel.php';
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: ../View/login.php');
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    
-    try {
-        $bdd = new PDO('mysql:host=localhost;dbname=student_link;charset=utf8', 'root', 'root');
-        $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (Exception $e) {
-        $logSql = "INSERT INTO logs (action_type, description) VALUES ('SYSTEM_ERROR', :desc)";
-        $logStmt = $bdd->prepare($logSql);
-        $logStmt->execute(['desc' => "Erreur SQL : " . $e->getMessage()]);
-    
-        die('Une erreur technique est survenue.');
-    }
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: ../View/setting.php');
+    exit();
+}
 
-    $action = $_POST['action'] ?? '';
+$action = $_POST['action'] ?? '';
 
-    if ($action === 'update_password') {
-        $oldPassword = $_POST['old_password'] ?? '';
-        $newPassword = $_POST['new_password'] ?? '';
+$db = Database::getConnection();
+$userModel = new UserModel();
+$logModel = new LogModel();
 
-        if (!empty($oldPassword) && !empty($newPassword)) {
-            // Récupère le mot de passe haché actuel
-            $stmt = $bdd->prepare("SELECT password FROM users WHERE id = :id");
-            $stmt->execute(['id' => $_SESSION['user_id']]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+if ($action === 'update_password') {
 
-            // Compare avec l'ancien mdp
-            if ($user && password_verify($oldPassword, $user['password'])) {
-                
-                $newHash = password_hash($newPassword, PASSWORD_BCRYPT);
-                $updateStmt = $bdd->prepare("UPDATE users SET password = :password WHERE id = :id");
-                $updateStmt->execute([
-                    'password' => $newHash,
-                    'id' => $_SESSION['user_id']
-                ]);
+    $oldPassword = $_POST['old_password'] ?? '';
+    $newPassword = $_POST['new_password'] ?? '';
 
-                header('Location: ../View/setting.php?status=password_updated');
-                exit();
-            } else {
-                header('Location: ../View/setting.php?error=wrong_password');
-                exit();
-            }
-        } else {
-            header('Location: ../View/setting.php?error=empty');
-            exit();
-        }
-    }
-
-    if ($action === 'disable_account') {
-        $stmt = $bdd->prepare("UPDATE users SET status = 'disabled' WHERE id = :id"); // Disabled au lieu de delete pour garder une trace en cas de recréation de compte
-        $stmt->execute(['id' => $_SESSION['user_id']]);
-
-        session_unset();
-        session_destroy();
-
-        header('Location: ../View/login.php?status=account_disabled');
+    if (!$oldPassword || !$newPassword) {
+        header('Location: ../View/setting.php?error=empty');
         exit();
     }
 
-} else {
-    header('Location: ../View/setting.php');
+    $stmt = $db->prepare("SELECT password FROM users WHERE id = :id");
+    $stmt->execute(['id' => $_SESSION['user_id']]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user || !password_verify($oldPassword, $user['password'])) {
+        header('Location: ../View/setting.php?error=wrong_password');
+        exit();
+    }
+
+    $newHash = password_hash($newPassword, PASSWORD_BCRYPT);
+
+    $stmt = $db->prepare("UPDATE users SET password = :password WHERE id = :id");
+    $stmt->execute([
+        'password' => $newHash,
+        'id' => $_SESSION['user_id']
+    ]);
+
+    $logModel->add('PASSWORD_CHANGE', "User #{$_SESSION['user_id']} a changé son mot de passe");
+
+    header('Location: ../View/setting.php?status=password_updated');
+    exit();
+}
+
+if ($action === 'disable_account') {
+
+    $stmt = $db->prepare("
+        UPDATE users 
+        SET status = 'disabled' 
+        WHERE id = :id
+    ");
+
+    $stmt->execute(['id' => $_SESSION['user_id']]);
+
+    $logModel->add('ACCOUNT_DISABLED', "User #{$_SESSION['user_id']} a désactivé son compte");
+
+    session_unset();
+    session_destroy();
+
+    header('Location: ../View/login.php?status=account_disabled');
     exit();
 }

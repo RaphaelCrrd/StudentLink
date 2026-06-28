@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil de <?= htmlspecialchars($student['firstname']); ?></title>
+    <link rel="manifest" href="/manifest.json">
+
+    <script>
+    // Verificaton de la compatibilité du navigateur
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('Service Worker Enregistré !'))
+        .catch((err) => console.log('Erreur SW :', err));
+    }
+    </script>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f3f4f6; margin: 0; padding: 20px; display: flex; justify-content: center; }
         .profile-card { background: white; width: 100%; max-width: 400px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 25px; box-sizing: border-box; text-align: center; }

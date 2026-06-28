@@ -42,14 +42,14 @@ try {
     <link rel="manifest" href="/manifest.json">
 
     <script>
-    // On vérifie si le navigateur supporte les Service Workers
+    // Verification de la compatifilibé du navigateur
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js')
         .then(() => console.log('Service Worker Enregistré !'))
         .catch((err) => console.log('Erreur SW :', err));
     }
     </script>
-    
+
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
         body { background-color: #f3f4f6; padding-bottom: 80px; }

@@ -17,6 +17,16 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Link - Inscription</title>
+    <link rel="manifest" href="/manifest.json">
+
+    <script>
+    // Verificaton de la compatibilité du navigateur
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('Service Worker Enregistré !'))
+        .catch((err) => console.log('Erreur SW :', err));
+    }
+    </script>
     <style>
         * {
             box-sizing: border-box;

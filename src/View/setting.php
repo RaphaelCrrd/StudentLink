@@ -11,6 +11,16 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Réglages - Student Link</title>
+    <link rel="manifest" href="/manifest.json">
+
+    <script>
+    // Verificaton de la compatibilité du navigateur
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('Service Worker Enregistré !'))
+        .catch((err) => console.log('Erreur SW :', err));
+    }
+    </script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: #f3f4f6; padding: 20px; padding-bottom: 90px; }
@@ -77,7 +87,7 @@ if (!isset($_SESSION['user_id'])) {
         </div>
 
         <div class="card danger-zone">
-            <div class="card-title">⚠️ Zone de danger</div>
+            <div class="card-title">Supprimer mon compte</div>
             <p class="danger-text">
                 Si vous décidez de désactiver votre compte, votre profil ne sera plus visible par les autres étudiants de votre établissement et vous serez déconnecté.
             </p>
