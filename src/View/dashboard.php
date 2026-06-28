@@ -39,7 +39,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Link - Dashboard</title>
-    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <script>
     // Verification de la compatifilibé du navigateur
@@ -145,8 +145,7 @@ try {
             border-top: 1px solid #e5e7eb;
             box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
         }
-        .nav-item { text-decoration: none; color: #9ca3af; font-size: 0.8rem; text-align: center; }
-        .nav-item.active { color: #4f46e5; font-weight: bold; }
+        
         
         .empty-state { text-align: center; color: #9ca3af; padding: 30px 0; font-size: 0.9rem; }
     </style>
@@ -201,10 +200,18 @@ try {
     </div>
 
     <nav class="bottom-nav">
-        <a href="dashboard.php" class="nav-item active">🏠<br>Accueil</a>
-        <a href="profile.php" class="nav-item">👤<br>Mon Profil</a>
-        <a href="setting.php" class="nav-item">⚙️<br>Réglages</a>
-        <a href="../Controller/LogoutController.php" class="nav-item" style="color: #e74c3c;">🚪<br>Quitter</a>
+        <a href="dashboard.php" class="nav-item active">
+            <span class="material-symbols-outlined">home</span>
+        </a>
+        <a href="profile.php" class="nav-item">
+            <span class="material-symbols-outlined">account_circle</span>
+        </a>
+        <a href="setting.php" class="nav-item">
+            <span class="material-symbols-outlined">settings</span>
+        </a>
+        <a href="../Controller/LogoutController.php" class="nav-item" style="color: #e74c3c;">
+            <span class="material-symbols-outlined">exit_to_app</span>
+        </a>
     </nav>
 
     <script>

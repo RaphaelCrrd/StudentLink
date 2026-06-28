@@ -8,6 +8,7 @@ require_once '../Controller/SearchController.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Résultats de recherche - Student Link</title>
     <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <script>
     // Verificaton de la compatibilité du navigateur
@@ -103,10 +104,18 @@ require_once '../Controller/SearchController.php';
     </div>
 
     <nav class="bottom-nav">
-        <a href="dashboard.php" class="nav-item">🏠<br>Accueil</a>
-        <a href="profile.php" class="nav-item">👤<br>Mon Profil</a>
-        <a href="setting.php" class="nav-item">⚙️<br>Réglages</a>
-        <a href="../Controller/LogoutController.php" class="nav-item" style="color: #e74c3c;">🚪<br>Quitter</a>
+        <a href="dashboard.php" class="nav-item">
+            <span class="material-symbols-outlined">home</span>
+        </a>
+        <a href="profile.php" class="nav-item">
+            <span class="material-symbols-outlined">account_circle</span>
+        </a>
+        <a href="setting.php" class="nav-item">
+            <span class="material-symbols-outlined">settings</span>
+        </a>
+        <a href="../Controller/LogoutController.php" class="nav-item" style="color: #e74c3c;">
+            <span class="material-symbols-outlined">exit_to_app</span>
+        </a>
     </nav>
 
     <script>

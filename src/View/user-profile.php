@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil de <?= htmlspecialchars($student['firstname']); ?></title>
     <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <script>
     // Verificaton de la compatibilité du navigateur
@@ -23,6 +24,9 @@
         .info-link { display: block; background: #f8fafc; padding: 12px; border-radius: 8px; color: #1e1b4b; text-decoration: none; font-weight: 600; font-size: 0.9rem; margin-bottom: 10px; border: 1px solid #e2e8f0; }
         .btn-report-trigger { background: #fef2f2; color: #dc2626; border: 1px solid #fee2e2; padding: 10px; border-radius: 8px; font-size: 0.85rem; width: 100%; margin-top: 25px; cursor: pointer; font-weight: 500; }
         .report-confirmation { background: #def7ec; color: #03543f; display: flex; flex-direction: column; align-items: center; padding: 12px; border-radius: 8px; font-size: 0.9rem; margin-bottom: 15px; text-align: center; font-weight: 600; width: 100%; max-width: 400px; }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; height: 65px; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #e5e7eb; }
+        .nav-item { text-decoration: none; color: #9ca3af; font-size: 0.8rem; text-align: center; }
+        .nav-item.active { color: #4f46e5; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -71,6 +75,21 @@
             </form>
         </div>
     </div>
+
+    <nav class="bottom-nav">
+        <a href="../View/dashboard.php" class="nav-item">
+            <span class="material-symbols-outlined">home</span>
+        </a>
+        <a href="../View/profile.php" class="nav-item">
+            <span class="material-symbols-outlined">account_circle</span>
+        </a>
+        <a href="../View/setting.php" class="nav-item">
+            <span class="material-symbols-outlined">settings</span>
+        </a>
+        <a href="../Controller/LogoutController.php" class="nav-item" style="color: #e74c3c;">
+            <span class="material-symbols-outlined">exit_to_app</span>
+        </a>
+    </nav>
 
 </div> <script>
 function toggleReportForm() {

@@ -11,6 +11,7 @@ if (!isset($users)) {
     <meta charset="UTF-8">
     <title>Panel Administration - Student Link</title>
     <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <script>
     // Verificaton de la compatibilité du navigateur
@@ -255,14 +256,19 @@ if (!isset($users)) {
 
     </div>
 </div>
-<nav class="bottom-nav">
-    <a href="../Controller/AdminController.php" class="nav-item active">🛠️<br>Admin</a>
-        
-    <a href="../Controller/ProfileController.php" class="nav-item">👤<br>Mon Profil</a>
-        
-    <a href="setting.php" class="nav-item">⚙️<br>Réglages</a>
-    
-    <a href="../Controller/LogoutController.php" class="nav-item" style="color: #e74c3c;">🚪<br>Quitter</a>
-</nav>
+    <nav class="bottom-nav">
+        <a href="dashboard.php" class="nav-item active">
+            <span class="material-symbols-outlined">home</span>
+        </a>
+        <a href="profile.php" class="nav-item">
+            <span class="material-symbols-outlined">account_circle</span>
+        </a>
+        <a href="setting.php" class="nav-item">
+            <span class="material-symbols-outlined">settings</span>
+        </a>
+        <a href="../Controller/LogoutController.php" class="nav-item" style="color: #e74c3c;">
+            <span class="material-symbols-outlined">exit_to_app</span>
+        </a>
+    </nav>
 </body>
 </html>

@@ -10,13 +10,13 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$query = trim($_GET['q'] ?? '');
+$searchQuery = trim($_GET['q'] ?? '');
 
 $userModel = new UserModel();
 $results = [];
 
-if ($query !== '') {
-    $results = $userModel->search($query, $_SESSION['user_id']);
+if ($searchQuery !== '') {
+    $results = $userModel->search($searchQuery, $_SESSION['user_id']);
 }
 
 require_once '../View/search-results.php';
