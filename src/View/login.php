@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Link - Connexion</title>
+    <title>Studou - Connexion</title>
     <link rel="stylesheet" href="../../public/assets/css/login.css">
     <link rel="manifest" href="/manifest.json">
 
@@ -20,7 +20,7 @@
 
     <div class="login-container">
         <div class="logo-area">
-            <h1>Student Link</h1>
+            <h1>Studou</h1>
             <p>Connecte-toi avec tes futurs camarades</p>
         </div>
 

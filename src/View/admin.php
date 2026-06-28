@@ -9,7 +9,7 @@ if (!isset($users)) {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Panel Administration - Student Link</title>
+    <title>Panel Administration - Studou</title>
     <link rel="stylesheet" href="../../public/assets/css/admin.css">
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />

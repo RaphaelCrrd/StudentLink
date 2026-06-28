@@ -16,7 +16,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Link - Inscription</title>
+    <title>Studou - Inscription</title>
     <link rel="stylesheet" href="../../public/assets/css/register.css">
     <link rel="manifest" href="/manifest.json">
 
@@ -33,7 +33,7 @@ try {
 
     <div class="register-container">
         <div class="header-area">
-            <h2>Rejoins Student Link</h2>
+            <h2>Rejoins Studou</h2>
             <p>Crée ton profil en quelques secondes</p>
         </div>
 
