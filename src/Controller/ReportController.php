@@ -48,7 +48,7 @@ try {
         "User $reporterId a signalé user $reportedId : $reason"
     );
 
-    header("Location: ../View/user-profile.php?id=$reportedId&report=success");
+    header("Location: UserProfileController.php?id=$reportedId&report=success");
     exit();
 
 } catch (Exception $e) {
