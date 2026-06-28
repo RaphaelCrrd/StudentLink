@@ -39,6 +39,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Link - Dashboard</title>
+    <link rel="stylesheet" href="../../public/assets/css/dashboard.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <script>
@@ -49,106 +50,6 @@ try {
         .catch((err) => console.log('Erreur SW :', err));
     }
     </script>
-
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: #f3f4f6; padding-bottom: 80px; }
-        
-        header {
-            background-color: #4f46e5;
-            color: white;
-            padding: 20px;
-            border-bottom-left-radius: 16px;
-            border-bottom-right-radius: 16px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        header h1 { font-size: 1.5rem; }
-        header p { font-size: 0.9rem; opacity: 0.9; margin-top: 4px; }
-
-        .container { padding: 20px; max-width: 500px; margin: 0 auto; }
-
-        .search-box {
-            background: white;
-            padding: 12px;
-            border-radius: 12px;
-            margin-top: -15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            display: flex;
-            gap: 10px;
-        }
-        .search-box input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 0.95rem;
-        }
-        .search-box button {
-            background: #4f46e5;
-            color: white;
-            border: none;
-            padding: 0 15px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .section-title { margin: 25px 0 15px 0; color: #374151; font-size: 1.1rem; }
-
-        .student-card {
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-        .avatar {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            background: #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #4f46e5;
-            font-size: 1.2rem;
-        }
-        .student-info { flex: 1; }
-        .student-info h3 { font-size: 1rem; color: #111827; }
-        .student-info p { font-size: 0.8rem; color: #6b7280; margin-top: 2px; }
-        .tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
-        .tag { background: #eef2ff; color: #4f46e5; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; }
-
-        .btn-connect {
-            background: #4f46e5;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            background: white;
-            height: 65px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #e5e7eb;
-            box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
-        }
-        
-        
-        .empty-state { text-align: center; color: #9ca3af; padding: 30px 0; font-size: 0.9rem; }
-    </style>
 </head>
 <body>
 

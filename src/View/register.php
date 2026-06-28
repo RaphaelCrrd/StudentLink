@@ -17,6 +17,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Link - Inscription</title>
+    <link rel="stylesheet" href="../../public/assets/css/register.css">
     <link rel="manifest" href="/manifest.json">
 
     <script>
@@ -27,121 +28,6 @@ try {
         .catch((err) => console.log('Erreur SW :', err));
     }
     </script>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-        }
-
-        body {
-            background-color: #f3f4f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-
-        .register-container {
-            background-color: #ffffff;
-            width: 100%;
-            max-width: 450px;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-        }
-
-        .header-area {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .header-area h2 {
-            color: #4f46e5;
-            font-size: 1.8rem;
-            margin-bottom: 6px;
-        }
-
-        .header-area p {
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 12px;
-        }
-
-        .form-row .form-group {
-            flex: 1;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            color: #374151;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            transition: border-color 0.2s;
-        }
-
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #4f46e5;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background-color: #4f46e5;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: background-color 0.2s;
-        }
-
-        .btn-submit:hover {
-            background-color: #4338ca;
-        }
-
-        .footer-link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: #6b7280;
-        }
-
-        .footer-link a {
-            color: #4f46e5;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        @media (max-width: 480px) {
-            .form-row {
-                flex-direction: column;
-                gap: 0;
-            }
-        }
-    </style>
 </head>
 <body>
 

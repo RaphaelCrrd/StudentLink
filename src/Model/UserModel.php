@@ -40,8 +40,8 @@ class UserModel {
 
     public function updateProfile($id, $age, $interests, $instagram) {
         $stmt = $this->db->prepare("
-            UPDATE users 
-            SET age = :age, interests = :interests, instagram = :instagram 
+            UPDATE users
+            SET age = :age, interests = :interests, instagram = :instagram
             WHERE id = :id
         ");
 
@@ -63,12 +63,12 @@ class UserModel {
 
     public function search($query, $myId) {
         $stmt = $this->db->prepare("
-            SELECT u.id, u.firstname, u.lastname, u.interests, u.instagram, s.name as school_name 
+            SELECT u.id, u.firstname, u.lastname, u.interests, u.instagram, u.avatar, s.name as school_name
             FROM users u
             LEFT JOIN schools s ON u.school_id = s.id
-            WHERE (u.firstname LIKE :q 
-                OR u.lastname LIKE :q 
-                OR u.interests LIKE :q 
+            WHERE (u.firstname LIKE :q
+                OR u.lastname LIKE :q
+                OR u.interests LIKE :q
                 OR s.name LIKE :q)
             AND u.id != :my_id
             AND u.status = 'active'

@@ -8,6 +8,7 @@ require_once '../Controller/SearchController.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Résultats de recherche - Student Link</title>
     <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="../../public/assets/css/search-results.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <script>
@@ -18,51 +19,6 @@ require_once '../Controller/SearchController.php';
         .catch((err) => console.log('Erreur SW :', err));
     }
     </script>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #f3f4f6; padding: 20px; padding-bottom: 80px; }
-        .container { max-width: 500px; margin: 0 auto; }
-        
-        .back-link { display: inline-block; margin-bottom: 20px; color: #4f46e5; text-decoration: none; font-weight: 600; }
-        h1 { font-size: 1.4rem; color: #111827; margin-bottom: 5px; }
-        .search-term { color: #6b7280; font-size: 0.9rem; margin-bottom: 20px; }
-
-        .student-card {
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-        .avatar {
-            width: 50px; height: 50px; border-radius: 50%;
-            background: #eef2ff; color: #4f46e5;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 1.1rem;
-        }
-        .student-info { flex: 1; }
-        .student-info h3 { font-size: 1rem; color: #111827; }
-        .student-info p { font-size: 0.8rem; color: #6b7280; margin-top: 2px; }
-        .tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
-        .tag { background: #f3f4f6; color: #4f46e5; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; }
-        
-        .btn-connect {
-            background: #4f46e5; color: white; border: none;
-            padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
-        }
-        .no-results { text-align: center; color: #9ca3af; padding: 4px 0; margin-top: 40px; }
-
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: white; height: 65px; display: flex;
-            justify-content: space-around; align-items: center; border-top: 1px solid #e5e7eb;
-        }
-        .nav-item { text-decoration: none; color: #9ca3af; font-size: 0.8rem; text-align: center; }
-        .nav-item.active { color: #4f46e5; font-weight: bold; }
-    </style>
 </head>
 <body>
 
@@ -81,7 +37,13 @@ require_once '../Controller/SearchController.php';
                 $initials = strtoupper(substr($student['firstname'], 0, 1) . substr($student['lastname'], 0, 1));
             ?>
                 <div class="student-card">
-                    <div class="avatar"><?= $initials; ?></div>
+                    <div class="avatar">
+                        <?php if (!empty($student['avatar']) && file_exists('../../public/uploads/profile_picture/' . $student['avatar'])): ?>
+                            <img src="../../public/uploads/profile_picture/<?= htmlspecialchars($student['avatar']); ?>" alt="Profile picture" style="width: 100%; height: 100%; object-fit: cover;">
+                        <?php else: ?>
+                            <?= $initials; ?>
+                        <?php endif; ?>
+                    </div>
                     <div class="student-info">
                         <h3><?= htmlspecialchars($student['firstname'] . ' ' . $student['lastname']); ?></h3>
                         <p>🏫 <?= htmlspecialchars($student['school_name']); ?></p>
